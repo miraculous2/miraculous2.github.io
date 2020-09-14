@@ -1,0 +1,39 @@
+        <html lang="en-US">
+<head profile="https://files.miraculousladybug.cf/favicon.png">
+<link rel="icon" 
+      type="image/png" 
+      href="https://files.miraculousladybug.cf/favicon.png">
+    <title>Monthly Subscription - Premium Subscription</title>
+            </head>
+<br/>
+<br/>
+<br/>
+<center>
+    <h1>Monthly Subscription | 0,99$/month</h1>
+    <br/>
+    <br/>
+<div id="paypal-button-container"></div>
+<script src="https://www.paypal.com/sdk/js?client-id=AXJ4oFM23GQ7EhfXdCF-kkNQEqCd3_x3fDG94IoaB7wv5oGiTN8Af4fVPyrwD-wXgk8tUQ4FnyuExfFO&vault=true" data-sdk-integration-source="button-factory"></script>
+<script>
+  paypal.Buttons({
+      style: {
+          shape: 'pill',
+          color: 'gold',
+          layout: 'vertical',
+          label: 'subscribe',
+          
+      },
+      createSubscription: function(data, actions) {
+        return actions.subscription.create({
+          'plan_id': 'P-253696457M689043VL5MMLRQ'
+        });
+      },
+      onApprove: function(data, actions) {
+        alert(data.subscriptionID);
+      }
+  }).render('#paypal-button-container');
+</script>
+    <br/>
+    <br/>
+    <h3>Once you have subscribed, you must send an email to <a href=mailto:contact@miraculousladybug.cf>contact@miraculousladybug.cf</a> providing the username and password you would like to have.</h3>
+</center>

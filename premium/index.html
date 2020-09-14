@@ -1,0 +1,240 @@
+<HTML>
+<HEAD>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>
+User login - Registration
+	</title>
+    <link rel='shortcut icon' type='image/x-icon' href='https://files.miraculousladybug.cf/favicon.png' />
+</HEAD>
+
+<script>
+function limpiar()
+{
+	object1.innerHTML=""
+}
+function sf()
+{
+	document.formulario.pass.focus();
+	setInterval('limpiar()',990000);
+}
+</script>
+
+<script LANGUAGE="JavaScript">
+	var i=1;
+	var j=0;
+	var sum=0;
+	var cadenaencriptada = "";
+	
+   var cadenadesencriptada = ""; 
+   var cadenadesencriptada2pass = ""; 
+   var cadenadesencriptadalast = ""; 
+   var cadenaoriginal; 
+   var c1='',chr;
+   var c2='',chr;
+   var c3='',chr;
+   var char1 = "";
+   var char1int=0;
+   var posinpass=0;
+   var posinfile=0;
+   var chardesencriptado='',chr;
+   var chardesencriptadoint=0;
+ 
+ var usuarioselementos=3;
+ var usuariosaccesos=[
+	["4C4D4C434E494F52","6B566C5B5E685E72","0738353E3402041E"],
+	["3B524B4F581F150D241A4D1C17211D5C595A191E5C5E5A686C655B563B27666323606932696A","5A5B6B67683E242D7379823C33453B783D4C3B3E4C736B817F767A6E8C749A8E4B7588518557","F63D344A3ED8CAD92249521F230CD51716113B3460481E212E29525775605A1FE921161A476A"]
+];
+ 
+   cadenaoriginal = cadenaencriptada;
+ 
+   function hexdec(cval){
+ 
+	cval = cval.toUpperCase();
+	var tval = 0; hexascii = "0123456789ABCDEF";
+	for(c=0; c<cval.length; c++){
+		mychar=cval.charAt(c);
+ 
+		for(ch=0; ch<16; ch++){
+ 
+			if (mychar == hexascii.charAt(ch)) {
+				tval = tval + ch;
+				if (c<cval.length-1) {tval = tval * 16}
+			}
+			
+		}
+	}
+ 
+	return tval;
+   }
+ 
+   function dechex(i)
+   {
+	return ("0"+(Number(i).toString(16))).slice(-2).toUpperCase();
+   }
+ 
+   function DesEncriptarCadena(password, cadenaentrada2) 
+   {
+
+	cadenaencriptada = cadenaentrada2;
+	cadenadesencriptada = "";
+	sum = 0;
+	posinpass = 0;
+	posinfile=0;
+
+              //cadenadesencriptada2pass = "";
+              if (password.length == 0) return;
+ 
+              for(i=1;i<password.length;i++) 
+              {
+                 sum = Number(password.charCodeAt(i-1)) + sum;
+              }
+ 
+              for(i=0;i<cadenaencriptada.length;) 
+              {
+                 c1 = cadenaencriptada.charAt(i++);
+                 c2 = cadenaencriptada.charAt(i++);
+                 char1 = c1 + c2;
+		 char1int = hexdec(char1);
+		 		 
+		 chardesencriptadoint = char1int - posinpass - password.charAt(posinpass).charCodeAt() - posinfile - sum - 23 - 6 - 2004;
+ 
+		 if (chardesencriptadoint < 0)
+		 {
+		    chardesencriptadoint = chardesencriptadoint % 256;
+		    if (chardesencriptadoint < 0)
+		    {
+		       chardesencriptadoint = chardesencriptadoint + 256;
+		    }
+		 }
+ 
+		 
+		 cadenadesencriptada = cadenadesencriptada + String.fromCharCode(chardesencriptadoint);
+ 
+		 posinpass++;
+		 posinfile++;
+		 
+		 if (posinpass == password.length) 
+		 {
+		    posinpass = 0;
+		 }
+	      }
+
+	return cadenadesencriptada;
+
+   } 
+
+
+function Encript(password, cadenaentrada2)
+{
+	cadenaencriptada = cadenaentrada2;
+
+	cadenadesencriptada2pass = "";
+	sum = 0;
+	posinpass = 0;
+	posinfile = 0;
+	cadenadesencriptada = "";
+	
+	if (password.length == 0) return;
+
+	for(i=1;i<password.length;i++)
+	{
+	sum = Number(password.charCodeAt(i-1)) + sum;
+	}
+
+      for(i=0;i<cadenaencriptada.length;)
+	{
+	// c1 = cadenaencriptada.charAt(i++);
+	// c2 = cadenaencriptada.charAt(i++);
+	// char1 = c1 + c2;
+	// char1int = hexdec(char1);
+            char1int = cadenaencriptada.charAt(i++);
+                 
+         chardesencriptadoint = char1int.charCodeAt() + posinpass + password.charAt(posinpass).charCodeAt() + posinfile + sum + 23 + 6 + 2004;
+
+         if (chardesencriptadoint > 255)
+         {
+         chardesencriptadoint = chardesencriptadoint % 256;
+         }
+
+         cadenadesencriptada2pass = cadenadesencriptada2pass + String.fromCharCode(chardesencriptadoint);
+
+         cadenadesencriptada = cadenadesencriptada + dechex (chardesencriptadoint);
+	
+         posinpass++;
+         posinfile++;
+        
+         if (posinpass == password.length)
+         {
+         posinpass = 0;
+         }
+     }
+    
+    return (cadenadesencriptada);
+    
+}
+
+   function DesEncript() 
+   {
+
+	
+	//return;
+
+	password = formulario.usu.value + formulario.pass.value;
+	password = Encript (password, "youdidit");
+	
+	for(i=0;i<usuarioselementos;i++)
+	{
+		//alert (password);
+
+		if (password == usuariosaccesos[0][i]) 
+		{
+			URL = DesEncriptarCadena (formulario.usu.value + formulario.pass.value, usuariosaccesos[1][i]);
+			//alert (URL);
+			window.location.href = URL;
+		}
+	}
+	
+   } 
+ 
+//--> 
+</script> 
+ 
+ 
+<BODY onLoad=sf() > 
+<br/>
+    <br/>
+    <br/>
+    <center>
+<H1> 
+Introduce your login details:
+</H1> 
+ 
+<TABLE> 
+    <TR> 
+        <TD><center> 
+		<form action=javascript:DesEncript() name=formulario> 
+		User: &nbsp;<input type="usuario" name="usu" maxlength=1000 size=30> 
+            <br/>
+            <br/>
+		Password: &nbsp; <input type="password" name="pass" maxlength=1000 size=30> 
+		&nbsp;<input type=submit value="Log in" name=desencript> 
+            </form></center> 
+        </TD> 
+    </TR> 
+</TABLE> 
+ 
+    <br/>
+    <br/>
+    <br/>
+    <h1>Don't you have an account?</h1>
+    <form method="get" action="/pricing">
+    <button type="submit">Register now!</button>
+</form>
+    </center>
+<tt><div id="object1" style="position:absolute; visibility:show font-family:courier">
+
+</div></tt> 
+ 
+</BODY> 
+ 
+</HTML> 
